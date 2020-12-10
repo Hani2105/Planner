@@ -1,0 +1,73 @@
+       if (2 == 3) {
+                    ArrayList<Object[]> l_ = new ArrayList<>();
+
+                    for (int i = 0; i < PRODUCTS.size(); i++) {
+                        for (int p = 0; p < PRODUCTS.size(); p++) {
+                            if (PRODUCTS.get(p).getNo() == i) {
+                                if (PRODUCTS.get(p).RELEASE) {
+
+                                    Object[] r_ = new Object[5];
+
+                                    r_[0] = formattedSQLDate(PRODUCTS.get(p).getStartTime());
+                                    r_[1] = formattedSQLDate(PRODUCTS.get(p).getEndTime());
+                                    r_[2] = getName();
+                                    r_[3] = "gyártás";
+                                    if (isEngineering(PRODUCTS.get(p).getJobnumber())) {
+                                        r_[4] = "mérnöki";
+                                    } else {
+                                        r_[4] = "normál gyártás";
+                                    }
+
+                                    l_.add(r_);
+
+                                }
+                            }
+                        }
+                    }
+
+                    for (int i = 0; i < DOWNTIMES.size(); i++) {
+
+                        Object[] r_ = new Object[5];
+                        r_[0] = formattedSQLDate(DOWNTIMES.get(i).StartTime);
+                        r_[1] = formattedSQLDate(DOWNTIMES.get(i).EndTime);
+                        r_[2] = getName();
+                        r_[3] = DOWNTIMES.get(i).getName();
+                        l_.add(r_);
+                    }
+
+                    JSONArray json = new JSONArray(l_);
+
+                    try {
+//                        URL url = new URL("http://143.116.140.117/api/se_gw.php?plan=" + json.toString());
+
+//                        URLConnection myURLConnection = url.openConnection();
+//                        myURLConnection.connect();
+
+                        HttpClient httpclient = HttpClients.createDefault();
+                        HttpPost httppost = new HttpPost("http://143.116.140.120/api/se_gw.php");
+                        List<NameValuePair> params = new ArrayList<NameValuePair>(2);
+                        params.add(new BasicNameValuePair("set", json.toString()));
+                        httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+                        //Execute and get the response.
+                        HttpResponse response = httpclient.execute(httppost);
+                        HttpEntity entity = response.getEntity();
+
+                        if (entity != null) {
+                            InputStream instream = entity.getContent();
+                            try {
+                                // do something useful
+                            } finally {
+                                instream.close();
+                            }
+                        }
+
+                    } catch (MalformedURLException ex) {
+                        System.out.println(ex.getMessage().toString());
+                    } catch (IOException ex) {
+                        Logger.getLogger(Station.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+//                    System.out.println("\nJSON:\n--------------------");
+//                    System.out.println("http://143.116.140.117/api/se_gw.php?plan=" + json.toString());
+//                    System.out.println("\n-----------------");
+                }

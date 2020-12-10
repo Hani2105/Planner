@@ -1,0 +1,18 @@
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>name</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>
+
+            <thead>
+                <tr>
+                    <th>Partnumber<div class="fht-cell" style="width: 332px;"></div></th>
+                    <th>Subinventory<div class="fht-cell" style="width: 265px;"></div></th>
+                    <th>Locator<div class="fht-cell" style="width: 250px;"></div></th>
+                    <th>Mennyiség<div class="fht-cell" style="width: 221px;"></div></th>
+					<th>TimeStamp<div class="fht-cell" style="width: 346px;"></div></th>
+					                    
+                </tr>
+            </thead>
+
+       
+
+            <tbody>
+            <tr style="display: none;"><td>LFHB2551111-SMT</td><td>REWORK</td><td>HAR.MAN.000</td><td>51.00</td><td>2016-01-05 16:21:11</td></tr><tr class="odd" style="display: none;"><td>LFHB2551111-SMT</td><td>RTV</td><td>RTV.000.000</td><td>3.00</td><td>2016-01-05 16:21:11</td></tr><tr style="display: none;"><td>LFHB2551111-SMT</td><td>WIP-HB</td><td>HAR.000.000</td><td>18.00</td><td>2016-01-05 16:21:11</td></tr>
+			</tbody></table></body></html>

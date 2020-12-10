@@ -1,0 +1,36 @@
+CREATE TABLE  `terv` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` varchar(12) COLLATE utf8_hungarian_ci NOT NULL,
+  `job` varchar(30) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `partnumber` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `stationid` int(3) DEFAULT NULL,
+  `startdate` datetime DEFAULT NULL,
+  `qty_terv` int(5) DEFAULT NULL,
+  `qty_teny` int(5) DEFAULT NULL,
+  `comments` varchar(200) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci COMMENT='Tervet tartalmazo tabla';
+
+
+
+
+
+
+
+CREATE TABLE  `terv` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `prod_id` varchar(12) COLLATE utf8_hungarian_ci NOT NULL,
+  `job` varchar(30) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `partnumber` varchar(40) COLLATE utf8_hungarian_ci DEFAULT NULL,
+  `seq` int(3) DEFAULT NULL,
+  `stationid` int(3) DEFAULT NULL,
+  `startdate` datetime DEFAULT NULL,
+  `qty_terv` int(5) DEFAULT NULL,
+  `qty_teny` int(5) DEFAULT NULL,
+  `startup` int(3) DEFAULT NULL,
+  `qty_p_hour` int(5) DEFAULT NULL,
+  `qty_full` int(6) DEFAULT NULL,
+  `comments` varchar(200) COLLATE utf8_hungarian_ci DEFAULT NULL,
+   UNIQUE KEY `id_UNIQUE` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_hungarian_ci COMMENT='Tervet tartalmazo tabla';
