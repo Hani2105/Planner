@@ -155,7 +155,7 @@ public class LOGIN extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(jButton1);
-        jButton1.setBounds(530, 380, 100, 28);
+        jButton1.setBounds(530, 380, 100, 26);
 
         VER.setFont(new java.awt.Font("sansserif", 0, 9)); // NOI18N
         VER.setForeground(new java.awt.Color(255, 255, 255));
@@ -171,7 +171,7 @@ public class LOGIN extends javax.swing.JFrame {
             }
         });
         jLayeredPane1.add(jLabel4);
-        jLabel4.setBounds(610, 10, 0, 0);
+        jLabel4.setBounds(610, 10, 16, 16);
 
         ID.setBorder(null);
         ID.addActionListener(new java.awt.event.ActionListener() {
@@ -208,7 +208,7 @@ public class LOGIN extends javax.swing.JFrame {
         jLayeredPane1.add(jLabel1);
         jLabel1.setBounds(170, 250, 90, 20);
 
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pl/nner/IMG/login_bg_border3_top.png"))); // NOI18N
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/pl/nner/IMG/login_bg_border3_top_edited.png"))); // NOI18N
         jLayeredPane1.add(jLabel5);
         jLabel5.setBounds(0, -5, 640, 430);
 
@@ -258,7 +258,8 @@ public class LOGIN extends javax.swing.JFrame {
                 PlNner.USER.level = Integer.parseInt(PlNner.MYDB_DB.getCellValue("SELECT level from perm WHERE id='" + ID.getText() + "';").toString());
                 PlNner.USER.mail = PlNner.MYDB_DB.getCellValue("SELECT email from perm WHERE id='" + ID.getText() + "';").toString();
                 System.out.println("user mail = " + PlNner.USER.mail);
-                PlNner.USER.pics = PlNner.MYDB_DB.getCellValue("SELECT pics from perm WHERE id='" + ID.getText() + "';");
+//                PlNner.USER.pics = PlNner.MYDB_DB.getCellValue("SELECT pics from perm WHERE id='" + ID.getText() + "';");
+                PlNner.USER.pics = -1;
                 System.out.println("user pics = " + PlNner.USER.pics);
                 PlNner.USER.name = PlNner.MYDB_DB.getCellValue("SELECT name from perm WHERE id='" + ID.getText() + "';").toString();
                 System.out.println("user name = " + PlNner.USER.name);

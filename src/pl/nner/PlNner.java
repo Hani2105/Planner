@@ -99,7 +99,8 @@ public class PlNner {
     public static int SW_KIT = 1; //Kittekési folyamatok ellenőrzése
     public static int SW_PARTNUMBER_PLR = 0; //Partnumber meglétének ellenőrzése
     //Program beállítások
-    public static String DIR = "S:\\SiteData\\BUD1\\EMS\\planning\\Reports\\Robi\\Csekme\\Line_Plan\\Pl@nner\\TERV";
+    //public static String DIR = "S:\\SiteData\\BUD1\\EMS\\planning\\Reports\\Robi\\Csekme\\Line_Plan\\Pl@nner\\TERV";
+    public static String DIR = "S:\\SiteData\\BUD1\\EMS\\planning\\Gyartastervek";
     public static int LOGIN_REQ = 1; //Bejelentkezés megkövetelése
     //Control Panel
     /*
@@ -218,8 +219,8 @@ public class PlNner {
         (new File(System.getProperty("user.dir") + "\\THEMES")).mkdir();
         (new File(System.getProperty("user.dir") + "\\SAMPLES")).mkdir();
         (new File(System.getProperty("user.dir") + "\\SQL")).mkdir();
-        Thread szal1 = new Thread(WO_TASK);
-        szal1.start();
+//        Thread szal1 = new Thread(WO_TASK);
+//        szal1.start();
 
         my_db_param = new sql_param();
         plr_db_param = new sql_param();

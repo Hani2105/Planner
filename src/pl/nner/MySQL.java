@@ -15,6 +15,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -40,65 +41,17 @@ public class MySQL {
         Database_name = db;
     }
 
-    public void setConnection() {
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-
-            connection = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
-
-            if (Port.equals("localhost")) {
-                connection.close();
-                connection = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
-            }
-
-            connection.setAutoCommit(false);
-            statement = connection.createStatement();
-
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void insertUploadCommand(String command) {
-
-        try {
-            statement.executeUpdate(command);
-        } catch (SQLException ex) {
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
-    public void closeConnection() {
-        try {
-            connection.commit();
-
-            statement.close();
-
-            connection.close();
-
-        } catch (SQLException ex) {
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-    }
-
     public void insertCommand(String command) {
-        Connection con = null;
+        //letryoljuk a connectiont
 
+        Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
             }
 
             Statement st;
@@ -111,19 +64,21 @@ public class MySQL {
 
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
             System.out.println(e.getMessage().toString());
+            hiba(e.getMessage());
         }
+
     }
 
     public void insertObjectArraytoTable(String table, Object[] data) {
-        Connection con = null;
 
+        Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
             }
 
             String ertek = "";
@@ -154,7 +109,7 @@ public class MySQL {
             con.close();
 
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-
+            hiba(e.getMessage());
         }
 
     }
@@ -163,79 +118,35 @@ public class MySQL {
         try {
             Connection con = null;
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             }
 
             return true;
 
-        } catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
+            hiba(ex.getMessage());
             return false;
         }
 
     }
 
-
-    public void replaceObjectArraytoTable(String table, Object[] data) {
-        Connection con = null;
-
-        try {
-            Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
-
-            if (Port.equals("localhost")) {
-                con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
-            }
-
-            String ertek = "";
-            String h2 = "";
-
-            Statement stmc = con.createStatement();
-            Statement st;
-            try (ResultSet rs = stmc.executeQuery("SELECT * from " + table)) {
-                ResultSetMetaData rsMetaData = rs.getMetaData();
-                int numberOfColumns = rsMetaData.getColumnCount();
-                for (int i = 1; i < numberOfColumns + 1; i++) {
-                    String columnName = rsMetaData.getColumnName(i);
-
-                    h2 = h2 + columnName + ",";
-                }
-                h2 = h2.substring(0, h2.length() - 1);
-                st = con.createStatement();
-                ertek = "";
-                for (int col = 0; col < data.length; col++) {
-                    ertek = ertek + "'" + data[col] + "',";
-
-                }
-                ertek = ertek.substring(0, ertek.length() - 1);
-                //st.executeUpdate("INSERT IGNOR INTO " + table.toLowerCase() + " (" + h2 + ")" + " VALUES (" + ertek + ")");
-                st.executeUpdate("REPLACE INTO " + table.toLowerCase() + " (" + h2 + ")" + " VALUES (" + ertek + ")");
-            }
-            st.close();
-            con.close();
-
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-
-        }
-
-    }
-
     public Object getCellValue(String query) {
+
         Object res = null;
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
             }
             Statement stmc = con.createStatement();
             stmc.executeQuery(query);
@@ -248,13 +159,13 @@ public class MySQL {
             con.close();
 
         } catch (InstantiationException e) {
-
+            hiba(e.getMessage());
         } catch (IllegalAccessException e) {
-
+            hiba(e.getMessage());
         } catch (ClassNotFoundException e) {
-
+            hiba(e.getMessage());
         } catch (SQLException e) {
-
+            hiba(e.getMessage());
             return -1;
         }
 
@@ -262,15 +173,16 @@ public class MySQL {
     }
 
     public DefaultComboBoxModel getComboBoxModel(String query, int Column) {
+
         DefaultComboBoxModel adatok = new DefaultComboBoxModel();
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
             }
 
             Statement stmc = con.createStatement();
@@ -295,12 +207,14 @@ public class MySQL {
             con.close();
 
         } catch (ClassNotFoundException e) {
-
+            hiba(e.getMessage());
         } catch (SQLException e) {
-
+            hiba(e.getMessage());
         } catch (InstantiationException ex) {
+            hiba(ex.getMessage());
             Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
+            hiba(ex.getMessage());
             Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -308,16 +222,16 @@ public class MySQL {
     }
 
     public DefaultTableModel getDataTableModel(String query) {
-      
+
         DefaultTableModel adatok = new DefaultTableModel();
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
             }
 
             Statement stmc = con.createStatement();
@@ -355,15 +269,29 @@ public class MySQL {
             con.close();
         } catch (InstantiationException e) {
             System.out.println(e.getMessage());
+            hiba(e.getMessage());
         } catch (IllegalAccessException e) {
             System.out.println(e.getMessage());
+            hiba(e.getMessage());
         } catch (ClassNotFoundException e) {
             System.out.println(e.getMessage());
+            hiba(e.getMessage());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            hiba(e.getMessage());
         }
 
         return adatok;
+    }
+
+    private void hiba(String message) {
+
+        //custom title, error icon
+        JOptionPane.showMessageDialog(null,
+                "<html>Adatbázis kapcsolódási probléma!<br>" + message + "</html>",
+                "Kapcsolat hiba!",
+                JOptionPane.ERROR_MESSAGE);
+
     }
 
 }

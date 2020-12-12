@@ -1283,10 +1283,10 @@ public class MainForm extends javax.swing.JFrame {
                 Date date = new Date(System.currentTimeMillis());
                 //letrehozzuk a planner progi konyvtarat ha meg nincs
                 //könyvtár létrehozása
-                new File(System.getProperty("user.home") + "\\pl@nner").mkdir();
+                new File(System.getProperty("user.home") + "\\Pl@nner\\ArchiveTervek").mkdir();
                 new File(fd.getDirectory() + "\\" + fd.getFile()).delete();
                 try {
-                    new File(System.getProperty(System.getProperty("user.home") + "\\Pl@nner\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan"))).delete();
+                    new File(System.getProperty(System.getProperty("user.home") + "\\Pl@nner\\ArchiveTervek\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan"))).delete();
                 } catch (Exception e) {
                 }
 
@@ -1311,7 +1311,7 @@ public class MainForm extends javax.swing.JFrame {
 
                 //írjuk ki lokálba is
                 //System.out.println(formatter.format(date));
-                ZipOutputStream ZOS = new ZipOutputStream(new FileOutputStream(System.getProperty("user.home") + "\\Pl@nner\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan")));
+                ZipOutputStream ZOS = new ZipOutputStream(new FileOutputStream(System.getProperty("user.home") + "\\Pl@nner\\ArchiveTervek\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan")));
                 ZOS.putNextEntry(new ZipEntry(fd.getFile()));
                 BufferedOutputStream BOS = new BufferedOutputStream(ZOS);
                 ObjectOutputStream s = new ObjectOutputStream(BOS);
@@ -1326,14 +1326,14 @@ public class MainForm extends javax.swing.JFrame {
                 BOS.close();
                 //másoljuk át a filet a hálózati helyre
                 //copy files using java.nio FileChannel
-                File source = new File(System.getProperty("user.home") + "\\Pl@nner\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan"));
+                File source = new File(System.getProperty("user.home") + "\\Pl@nner\\ArchiveTervek\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan"));
                 File dest = new File(fd.getDirectory() + "\\" + fd.getFile());
                 long start = System.nanoTime();
                 copyFileUsingChannel(source, dest);
                 //System.out.println("Time taken by Channel Copy = " + (System.nanoTime() - start));
 
-                JOptionPane.showMessageDialog(this, "<html>Terv másolásra került az alábbi fájlnévvel " + fd.getDirectory() + "\\" + fd.getFile() + "<br> " + (System.nanoTime() - start) + " nanosec alatt!</html>", "Figyelem", JOptionPane.INFORMATION_MESSAGE);
-                byte[] f1 = Files.readAllBytes(Paths.get(System.getProperty("user.home") + "\\Pl@nner\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan")));
+                JOptionPane.showMessageDialog(this, "<html>Terv másolásra került az alábbi fájlnévvel " + fd.getDirectory() + "\\" + fd.getFile() + "<br> " + ((System.nanoTime() - start))/1000000000 + " sec alatt!</html>", "Figyelem", JOptionPane.INFORMATION_MESSAGE);
+                byte[] f1 = Files.readAllBytes(Paths.get(System.getProperty("user.home") + "\\Pl@nner\\ArchiveTervek\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan")));
                 byte[] f2 = Files.readAllBytes(Paths.get(fd.getDirectory() + "\\" + fd.getFile()));
 
                 if (Arrays.equals(f1, f2)) {
