@@ -123,13 +123,13 @@ public class MainForm extends javax.swing.JFrame {
 
                     } else {
                         PlNner.isUPDATED = false;
-                        //PlNner.REMINDER++;
+                        PlNner.REMINDER++;
                         //system_software_update
                         ImageIcon ico = new ImageIcon(this.getClass().getResource("IMG/system_software_update.png"));
-                        String message = "<html>Figyelem, változott a program verziója " + PlNner.VER_FOLLOW + " -ra.<br>Kérem töltse le a frissítést,<br>lépjen ki és indítsa el az update.vbs -t, majd indítsa újra a programot.<br><br>A program az alábbi frissítéseket tartalmazza: <br> ---------------------------------------------- <br>" + PlNner.VER_COMMENT.replace(",", "<br>") + "</html>";
+                        String message = "<html>Figyelem, változott a program verziója " + PlNner.VER_FOLLOW + " -ra.<br>Kérem indítsa újra a programot!<br><br>A program az alábbi frissítéseket tartalmazza: <br> ---------------------------------------------- <br>" + PlNner.VER_COMMENT.replace(",", "<br>") + "</html>";
                         System.out.println("Frissítés értesítés...");
 
-                        JOptionPane.showMessageDialog(PlNner.MF, message, "Figyelem!", JOptionPane.INFORMATION_MESSAGE, ico);
+                        JOptionPane.showMessageDialog(null, message, "Figyelem!", JOptionPane.INFORMATION_MESSAGE, ico);
 
                     }
 

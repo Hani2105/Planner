@@ -753,12 +753,12 @@ public final class Station extends JPanel implements Serializable {
 
         DefaultTableModel MODEL = PlNner.MYDB_DB.getDataTableModel("SELECT * from " + PlNner.PLANTABLENAME + " WHERE stationid = '" + station_id + "' AND startdate >= '" + formatDate(T1) + "' AND startdate <= '" + formatDate(T2.plusHours(2)) + "' and active=1;");
 
-        for (int i = 0; i < PRODUCTS.size(); i++) {
-            Arrays.fill(PRODUCTS.get(i).QTYS_TENY, 0);
-            Arrays.fill(PRODUCTS.get(i).QTYS_TENY_MSZAK, 0);
-            Arrays.fill(PRODUCTS.get(i).QTYS_TENY_TIME, 0);
-            repaint();
-        }
+//        for (int i = 0; i < PRODUCTS.size(); i++) {
+//            Arrays.fill(PRODUCTS.get(i).QTYS_TENY, 0);
+//            Arrays.fill(PRODUCTS.get(i).QTYS_TENY_MSZAK, 0);
+//            Arrays.fill(PRODUCTS.get(i).QTYS_TENY_TIME, 0);
+//            repaint();
+//        }
 
         for (int i = 0; i < PRODUCTS.size(); i++) {
             progress_text = "Megvalósulás lekérdezése: [" + i + "/" + PRODUCTS.size() + "]";
@@ -870,8 +870,9 @@ public final class Station extends JPanel implements Serializable {
                 }
 
                 if (TENY_CALC.isSelected()) {
-                    calcResult();
-                    calcResult();
+//                    calcResult();
+//                    calcResult();
+                      calcResult_2();
 
                     for (int i = 0; i < PRODUCTS.size(); i++) {
 

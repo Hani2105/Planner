@@ -47,11 +47,11 @@ public class MySQL {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
             }
 
             Statement st;
@@ -74,11 +74,11 @@ public class MySQL {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
             }
 
             String ertek = "";
@@ -118,11 +118,11 @@ public class MySQL {
         try {
             Connection con = null;
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             }
 
@@ -142,11 +142,11 @@ public class MySQL {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
             }
             Statement stmc = con.createStatement();
             stmc.executeQuery(query);
@@ -178,11 +178,11 @@ public class MySQL {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
             }
 
             Statement stmc = con.createStatement();
@@ -227,11 +227,11 @@ public class MySQL {
         Connection con = null;
         try {
             Class.forName("com.mysql.jdbc.Driver").newInstance();
-            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+            con = DriverManager.getConnection("jdbc:mysql://" + Host + ":" + Port + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             if (Port.equals("localhost")) {
                 con.close();
-                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=10");
+                con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
             }
 
             Statement stmc = con.createStatement();
