@@ -33,7 +33,7 @@ public class Session implements Serializable {
     public int SW_CONTROL_PANEL = 1; //Control panel autómatikus indulása
     public float OPACITY_CONTROL_PANEL = 0.9f; //Control Panel átlátszósága
     public int SW_PARTNUMBER_PLR = 0; //Partnumber meglétének ellenőrzése
-    public   String DIR = "S:\\SiteData\\BUD1\\EMS\\planning\\Reports\\Robi\\Csekme\\Line_Plan\\Pl@nner\\TERV";
+    public   String DIR = "S:\\SiteData\\BUD1\\EMS\\planning\\Gyartastervek";
     public   int LOGIN_REQ = 1; //Bejelentkezés megkövetelése
     public int DEFAULT_RUNUP_MIN=30;
     public int ErrorMsgDelay = 600000;

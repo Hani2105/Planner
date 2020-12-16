@@ -7,6 +7,7 @@ package pl.nner;
 
 import com.sun.deploy.uitoolkit.impl.fx.ui.resources.ResourceManager;
 import java.awt.Toolkit;
+import java.io.BufferedOutputStream;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
 import java.util.ArrayList;
@@ -22,11 +23,15 @@ import org.ini4j.Wini;
 import org.joda.time.DateTime;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  *
@@ -214,40 +219,10 @@ public class PlNner {
 
         System.out.println("Könyvtárszerkezet létrehozása:");
         new File(System.getProperty("user.home") + "\\Pl@nner").mkdir();
-        (new File(System.getProperty("user.dir") + "\\dat")).mkdir();
-        (new File(System.getProperty("user.dir") + "\\TERV")).mkdir();
-        (new File(System.getProperty("user.dir") + "\\THEMES")).mkdir();
-        (new File(System.getProperty("user.dir") + "\\SAMPLES")).mkdir();
-        (new File(System.getProperty("user.dir") + "\\SQL")).mkdir();
-//        Thread szal1 = new Thread(WO_TASK);
-//        szal1.start();
+        new File(System.getProperty("user.home") + "\\Pl@nner\\Temp").mkdir();
 
         my_db_param = new sql_param();
         plr_db_param = new sql_param();
-
-        //Create directories
-        String MAIN_PATH = "S:\\SiteData\\BUD1\\EMS\\planning\\[DEV_CENTER]\\PlannerFacelift";
-
-        File sampledir = new File(MAIN_PATH + "\\SAMPLES");
-        if (!sampledir.exists()) {
-            try {
-                sampledir.mkdir();
-            } catch (Exception ex) {
-
-            }
-        }
-
-        File themesdir = new File(MAIN_PATH + "\\THEMES");
-        if (!themesdir.exists()) {
-            try {
-                themesdir.mkdir();
-                //tegyuk ki a fileokat
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-
-            }
-        }
 
         try {
 
@@ -269,15 +244,6 @@ public class PlNner {
         chkMake("message.txt");
         chkMake("subject.txt");
 
-
-        /*
-         mysql_iptext.setText(ini.get("Mysql", mysql_combobox.getSelectedItem().toString() + "_Ip"));
-         mysql_porttext.setText(ini.get("Mysql", mysql_combobox.getSelectedItem().toString() + "_Port"));
-         mysql_usertext.setText(ini.get("Mysql", mysql_combobox.getSelectedItem().toString() + "_user"));
-         mysql_passwordtext.setText(ini.get("Mysql", mysql_combobox.getSelectedItem().toString() + "_password"));
-         mysql_databasetext.setText(ini.get("Mysql", mysql_combobox.getSelectedItem().toString() + "_database"));
-         mysql_nametext.setText(mysql_combobox.getSelectedItem().toString());
-         */
         //PLR
         try {
             plr_db_param.host = ini.get("Mysql", "PLR_DB" + "_Ip");
@@ -605,13 +571,17 @@ public class PlNner {
 
             @Override
             public void run() {
-                Object res = MYDB_DB.getCellValue("SELECT ver FROM versionf2 ORDER BY ID DESC LIMIT 1");
-                if (res != null) {
-                    VER_FOLLOW = res.toString();
-                    res = MYDB_DB.getCellValue("SELECT comment FROM versionf2 ORDER BY ID DESC LIMIT 1");
+                try {
+                    Object res = MYDB_DB.getCellValue("SELECT ver FROM versionf2 ORDER BY ID DESC LIMIT 1");
                     if (res != null) {
-                        VER_COMMENT = res.toString();
+                        VER_FOLLOW = res.toString();
+                        res = MYDB_DB.getCellValue("SELECT comment FROM versionf2 ORDER BY ID DESC LIMIT 1");
+                        if (res != null) {
+                            VER_COMMENT = res.toString();
+                        }
                     }
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
                 }
             }
         };
@@ -619,6 +589,56 @@ public class PlNner {
         Thread szal = new Thread(CHECK);
         szal.start();
         //varjon ra a main szal
+        //szal.join();
+
+    }
+
+    public static void doTempSave() throws InterruptedException {
+        Runnable SAVE = new Runnable() {
+
+            @Override
+            public void run() {
+                //megnezzuk, hogy milyen sori tervek vannak nyitva
+                for (int i = 0; i < MainForm.TOP.getTabCount(); i++) {
+                    try {
+
+                        String sor = MainForm.TOP.getComponentAt(i).getName().substring(0, 1);
+                        //System.out.println(sor);
+                        File myObj = new File(System.getProperty("user.home") + "\\Pl@nner\\Temp\\" + sor + ".plan");
+                        if (myObj.delete()) {
+                            //System.out.println("Deleted the file: " + myObj.getName());
+                        } else {
+                            //System.out.println("Failed to delete the file.");
+                        }
+                        //lementjük
+                        Plan plan = PlNner.PLANS.get(MainForm.TOP.getSelectedIndex());
+                        Plan2StreamV6 PS = new Plan2StreamV6();
+                        PS.load(plan);
+                        ZipOutputStream ZOS = new ZipOutputStream(new FileOutputStream(System.getProperty("user.home") + "\\Pl@nner\\Temp\\" + sor + ".plan"));
+                        ZOS.putNextEntry(new ZipEntry(System.getProperty("user.home") + "\\Pl@nner\\Temp\\" + sor + ".plan"));
+                        BufferedOutputStream BOS = new BufferedOutputStream(ZOS);
+                        ObjectOutputStream s = new ObjectOutputStream(BOS);
+
+                        s.writeObject(PS);
+                        //plan.NEED_TO_SAVE = false;
+                        s.flush();
+                        BOS.flush();
+
+                        ZOS.closeEntry();
+                        s.close();
+                        BOS.close();
+
+                    } catch (Exception e) {
+                    }
+                }
+            }
+        };
+
+        Thread szal = new Thread(SAVE);
+
+        szal.start();
+        //varjon ra a main szal
+
         szal.join();
 
     }

@@ -106,16 +106,23 @@ public class MainForm extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
+            try {
+                //temp mentese a terveknek
+                PlNner.doTempSave();
+            } catch (InterruptedException ex) {
+                Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
             if (PlNner.REMINDER == 0) {
                 try {
+
                     PlNner.doVersionCheck();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
                     PlNner.VER_FOLLOW = null;
+                } catch (Exception ex) {
+                    System.out.println(ex.getMessage());
                 }
-                
-               
+
                 if (PlNner.VER_FOLLOW != null) {
 
                     if (PlNner.VERSION.equals(PlNner.VER_FOLLOW)) {
@@ -241,7 +248,7 @@ public class MainForm extends javax.swing.JFrame {
         TabReorderHandler.enableReordering(TOP);
 
         setTitle("Pl@nner v" + PlNner.VERSION);
-        orajel = new Timer(300000, timer);
+        orajel = new Timer(60000, timer);
         Timer t2 = new Timer(100, timer2);
         t2.start();
         orajel.start();
@@ -1298,17 +1305,6 @@ public class MainForm extends javax.swing.JFrame {
                 byte[] buf = new byte[1024];
                 int counter = 0;
                 int len;
-//ez helyett a local filet masoljuk at a megadott helyre!
-//                ZipOutputStream ZOS = new ZipOutputStream(new FileOutputStream(fd.getDirectory() + "\\" + fd.getFile()));
-//                ZOS.putNextEntry(new ZipEntry(fd.getFile()));
-//                BufferedOutputStream BOS = new BufferedOutputStream(ZOS);
-//                ObjectOutputStream s = new ObjectOutputStream(BOS);
-//
-//                s.writeObject(PS);
-//                plan.NEED_TO_SAVE = false;
-//                s.flush();
-//                BOS.flush();
-
                 //írjuk ki lokálba is
                 //System.out.println(formatter.format(date));
                 ZipOutputStream ZOS = new ZipOutputStream(new FileOutputStream(System.getProperty("user.home") + "\\Pl@nner\\ArchiveTervek\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan")));
@@ -1332,13 +1328,13 @@ public class MainForm extends javax.swing.JFrame {
                 copyFileUsingChannel(source, dest);
                 //System.out.println("Time taken by Channel Copy = " + (System.nanoTime() - start));
 
-                JOptionPane.showMessageDialog(this, "<html>Terv másolásra került az alábbi fájlnévvel " + fd.getDirectory() + "\\" + fd.getFile() + "<br> " + ((System.nanoTime() - start))/1000000000 + " sec alatt!</html>", "Figyelem", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(this, "<html>Terv másolásra került az alábbi fájlnévvel " + fd.getDirectory() + "\\" + fd.getFile() + "<br> " + ((System.nanoTime() - start)) / 1000000000 + " sec alatt!</html>", "Figyelem", JOptionPane.INFORMATION_MESSAGE);
                 byte[] f1 = Files.readAllBytes(Paths.get(System.getProperty("user.home") + "\\Pl@nner\\ArchiveTervek\\" + fd.getFile().replace(".plan", formatter.format(date) + ".plan")));
                 byte[] f2 = Files.readAllBytes(Paths.get(fd.getDirectory() + "\\" + fd.getFile()));
 
                 if (Arrays.equals(f1, f2)) {
 
-                    JOptionPane.showMessageDialog(this, "A két file megeggyezik!", "Figyelem", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "A két file egyforma!", "Figyelem", JOptionPane.INFORMATION_MESSAGE);
                 } else {
 
                     JOptionPane.showMessageDialog(this,

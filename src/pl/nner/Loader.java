@@ -650,7 +650,7 @@ public class Loader extends javax.swing.JDialog {
                                         if (pn.equals(TAB.getValueAt(r, 1).toString()) && (Integer.parseInt(TAB.getValueAt(r, 4).toString()) == s) && (TAB.getValueAt(r, 3).toString().toLowerCase().equals(active_station.getName().toLowerCase()))) {
 
                                             TAB.setRowSelectionInterval(r, r);
-                                            System.out.println("Betölt");
+                                            //System.out.println("Betölt");
                                             //peldanyositunk egy productot
                                             Product prod = new Product(PLANS.get(MainForm.TOP.getSelectedIndex()).weekdate);
                                             prod.setJobnumber(SOURCE.getValueAt(i, 0).toString());

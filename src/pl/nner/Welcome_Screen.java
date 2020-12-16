@@ -66,7 +66,7 @@ public class Welcome_Screen extends javax.swing.JDialog {
         }
         try {
             DefaultListModel MODEL = new DefaultListModel();
-            System.out.println("sessionméret " + PlNner.session.files.size());
+            //System.out.println("sessionméret " + PlNner.session.files.size());
             String[] tmp = null;
             for (int i = 0; i < PlNner.session.files.size(); i++) {
                 try {

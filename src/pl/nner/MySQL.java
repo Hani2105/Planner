@@ -110,6 +110,8 @@ public class MySQL {
 
         } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
             hiba(e.getMessage());
+        } catch (Exception e) {
+            hiba(e.getMessage());
         }
 
     }
@@ -125,7 +127,7 @@ public class MySQL {
                 con = DriverManager.getConnection("jdbc:mysql://" + Host + "/" + Database_name + "?user=" + User + "&password=" + Pass + "&useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&autoReconnect=true&failOverReadOnly=false&maxReconnects=5");
 
             }
-
+            con.close();
             return true;
 
         } catch (Exception ex) {
@@ -160,11 +162,17 @@ public class MySQL {
 
         } catch (InstantiationException e) {
             hiba(e.getMessage());
+            return -1;
         } catch (IllegalAccessException e) {
             hiba(e.getMessage());
+            return -1;
         } catch (ClassNotFoundException e) {
             hiba(e.getMessage());
+            return -1;
         } catch (SQLException e) {
+            hiba(e.getMessage());
+            return -1;
+        } catch (Exception e) {
             hiba(e.getMessage());
             return -1;
         }
@@ -216,6 +224,9 @@ public class MySQL {
         } catch (IllegalAccessException ex) {
             hiba(ex.getMessage());
             Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            hiba(e.getMessage());
+            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, e);
         }
 
         return adatok;
@@ -268,24 +279,28 @@ public class MySQL {
             rs.beforeFirst();
             con.close();
         } catch (InstantiationException e) {
-            System.out.println(e.getMessage());
+
             hiba(e.getMessage());
         } catch (IllegalAccessException e) {
-            System.out.println(e.getMessage());
+
             hiba(e.getMessage());
         } catch (ClassNotFoundException e) {
-            System.out.println(e.getMessage());
+
             hiba(e.getMessage());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+
             hiba(e.getMessage());
+        } catch (Exception e) {
+
+            hiba(e.getMessage());
+
         }
 
         return adatok;
     }
 
     private void hiba(String message) {
-
+        System.out.println(message);
         //custom title, error icon
         JOptionPane.showMessageDialog(null,
                 "<html>Adatbázis kapcsolódási probléma!<br>" + message + "</html>",
