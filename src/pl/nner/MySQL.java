@@ -5,6 +5,7 @@
  */
 package pl.nner;
 
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -16,7 +17,10 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
+
 import javax.swing.table.DefaultTableModel;
+import java.util.Timer;
+import java.util.concurrent.locks.Lock;
 
 /**
  *
@@ -39,6 +43,7 @@ public class MySQL {
         User = user;
         Pass = pass;
         Database_name = db;
+
     }
 
     public void insertCommand(String command) {
@@ -62,9 +67,10 @@ public class MySQL {
             st.close();
             con.close();
 
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-            System.out.println(e.getMessage().toString());
-            hiba(e.getMessage());
+        } catch (Exception e) {
+
+            ConnectionBlocker cb = ConnectionBlocker.getInstance();
+
         }
 
     }
@@ -108,10 +114,9 @@ public class MySQL {
             st.close();
             con.close();
 
-        } catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
-            hiba(e.getMessage());
         } catch (Exception e) {
-            hiba(e.getMessage());
+
+            ConnectionBlocker cb = ConnectionBlocker.getInstance();
         }
 
     }
@@ -131,8 +136,7 @@ public class MySQL {
             return true;
 
         } catch (Exception ex) {
-            ex.printStackTrace();
-            hiba(ex.getMessage());
+
             return false;
         }
 
@@ -160,21 +164,9 @@ public class MySQL {
             }
             con.close();
 
-        } catch (InstantiationException e) {
-            hiba(e.getMessage());
-            return -1;
-        } catch (IllegalAccessException e) {
-            hiba(e.getMessage());
-            return -1;
-        } catch (ClassNotFoundException e) {
-            hiba(e.getMessage());
-            return -1;
-        } catch (SQLException e) {
-            hiba(e.getMessage());
-            return -1;
         } catch (Exception e) {
-            hiba(e.getMessage());
-            return -1;
+
+            ConnectionBlocker cb = ConnectionBlocker.getInstance();
         }
 
         return res;
@@ -214,19 +206,9 @@ public class MySQL {
             rs.beforeFirst();
             con.close();
 
-        } catch (ClassNotFoundException e) {
-            hiba(e.getMessage());
-        } catch (SQLException e) {
-            hiba(e.getMessage());
-        } catch (InstantiationException ex) {
-            hiba(ex.getMessage());
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            hiba(ex.getMessage());
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, ex);
         } catch (Exception e) {
-            hiba(e.getMessage());
-            Logger.getLogger(MySQL.class.getName()).log(Level.SEVERE, null, e);
+
+            ConnectionBlocker cb = ConnectionBlocker.getInstance();
         }
 
         return adatok;
@@ -278,35 +260,17 @@ public class MySQL {
 
             rs.beforeFirst();
             con.close();
-        } catch (InstantiationException e) {
-
-            hiba(e.getMessage());
-        } catch (IllegalAccessException e) {
-
-            hiba(e.getMessage());
-        } catch (ClassNotFoundException e) {
-
-            hiba(e.getMessage());
-        } catch (SQLException e) {
-
-            hiba(e.getMessage());
         } catch (Exception e) {
 
-            hiba(e.getMessage());
-
+            ConnectionBlocker cb = ConnectionBlocker.getInstance();
         }
 
         return adatok;
     }
 
-    private void hiba(String message) {
-        System.out.println(message);
-        //custom title, error icon
-        JOptionPane.showMessageDialog(null,
-                "<html>Adatbázis kapcsolódási probléma!<br>" + message + "</html>",
-                "Kapcsolat hiba!",
-                JOptionPane.ERROR_MESSAGE);
-
+    private void hiba(final String message) {
+        ConnectionBlocker cb = ConnectionBlocker.getInstance();
+       
     }
 
 }

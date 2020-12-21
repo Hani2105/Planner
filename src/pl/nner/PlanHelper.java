@@ -69,6 +69,13 @@ public class PlanHelper extends javax.swing.JDialog {
 
             PlNner.EW.init();
             Working(true);
+            DefaultTableModel model = new DefaultTableModel();
+            model.setRowCount(0);
+            model = PlNner.PLR_DB.getDataTableModel("SELECT `cycletime_prog`.`ID` as cpID,`oraclepn`,smtprogname,`smtline` as sline,`sequence`,`boardnumber`,(SELECT value FROM cycletime_data WHERE cycletime_prog_id = cpID AND priority = 1 ORDER BY ID DESC LIMIT 1) as mertido,(SELECT value FROM cycletime_data WHERE cycletime_prog_id = cpID AND priority = 2 ORDER BY ID DESC LIMIT 1) as gyorsmeres,(SELECT value FROM cycletime_data WHERE cycletime_prog_id = cpID AND priority = 3 ORDER BY ID DESC LIMIT 1) as kalkulalt,IFNULL(expectedeffbyprog,COALESCE((SELECT expectedeff FROM cycletime_config WHERE smtline = sline),(SELECT expectedeff FROM cycletime_config WHERE smtline = 'ALL'))) as eff FROM `cycletime_prog` ORDER BY smtprogname;");
+            if (model.getRowCount() == 0) {
+                return;
+            }
+
             ENG_MODEL = PlNner.PLR_DB.getDataTableModel("SELECT `cycletime_prog`.`ID` as cpID,`oraclepn`,smtprogname,`smtline` as sline,`sequence`,`boardnumber`,(SELECT value FROM cycletime_data WHERE cycletime_prog_id = cpID AND priority = 1 ORDER BY ID DESC LIMIT 1) as mertido,(SELECT value FROM cycletime_data WHERE cycletime_prog_id = cpID AND priority = 2 ORDER BY ID DESC LIMIT 1) as gyorsmeres,(SELECT value FROM cycletime_data WHERE cycletime_prog_id = cpID AND priority = 3 ORDER BY ID DESC LIMIT 1) as kalkulalt,IFNULL(expectedeffbyprog,COALESCE((SELECT expectedeff FROM cycletime_config WHERE smtline = sline),(SELECT expectedeff FROM cycletime_config WHERE smtline = 'ALL'))) as eff FROM `cycletime_prog` ORDER BY smtprogname;");
             for (int p = 0; p < PlNner.PLANS.size(); p++) {
                 Plan plan = PlNner.PLANS.get(p);
@@ -76,28 +83,26 @@ public class PlanHelper extends javax.swing.JDialog {
                 for (int s = 0; s < plan.STATIONS.size(); s++) {
                     Station station = plan.STATIONS.get(s);
 
-                //new Object[]{"Terv","Állomás","JOB","Partnumber","Érintett ID-k","Észrevétel","Javaslat"
+                    //new Object[]{"Terv","Állomás","JOB","Partnumber","Érintett ID-k","Észrevétel","Javaslat"
                     for (int t = 0; t < station.PRODUCTS.size(); t++) {
                         Product prod = station.PRODUCTS.get(t);
 
-                        if (station.isPassed(prod.getJobnumber())){
-                        
-                        
-                        
-                        boolean EXIST = false;
-                        for (int r = 0; r < ENG_MODEL.getRowCount(); r++) {
-                            try {
-                                if (((ENG_MODEL.getValueAt(r, 1).toString().equals(prod.getPartnumber()))) && ((ENG_MODEL.getValueAt(r, 3).toString().toLowerCase().equals(station.getName().toLowerCase())))) {
-                                    EXIST = true;
-                                }
-                            } catch (Exception ee) {
+                        if (station.isPassed(prod.getJobnumber())) {
 
+                            boolean EXIST = false;
+                            for (int r = 0; r < ENG_MODEL.getRowCount(); r++) {
+                                try {
+                                    if (((ENG_MODEL.getValueAt(r, 1).toString().equals(prod.getPartnumber()))) && ((ENG_MODEL.getValueAt(r, 3).toString().toLowerCase().equals(station.getName().toLowerCase())))) {
+                                        EXIST = true;
+                                    }
+                                } catch (Exception ee) {
+
+                                }
                             }
-                        }
-                        
-                        if (!EXIST){
-                            if (PlNner.SW_PARTNUMBER_PLR==1){
-                            Object[] sor = new Object[7];
+
+                            if (!EXIST) {
+                                if (PlNner.SW_PARTNUMBER_PLR == 1) {
+                                    Object[] sor = new Object[7];
                                     sor[0] = plan.getName();
                                     sor[1] = station.getName();
                                     sor[2] = prod.getJobnumber();
@@ -106,71 +111,71 @@ public class PlanHelper extends javax.swing.JDialog {
                                     sor[5] = "Hiányzik a PLR adatbázisban erre a termékre és erre a sorra az adatok!";
                                     sor[6] = "Maradéktalanúl értesítse a mérnökséget";
                                     PlNner.EW.MODEL.addRow(sor);
-                        }
-                        }
-
-                        if ((PlNner.SW_QTY_AUTO_CORRECT == 1) && (station.getJob(prod.getJobnumber()).getStop().getMillis() < new DateTime().getMillis())) {
-                            if ((prod.getFactMSzak() > 0) && (prod.getFactMSzak() < prod.getQty())) {
-                                prod.setQty(prod.getFactMSzak());
-                            }
-                        }
-
-                        if ((PlNner.SW_NOW_AND_FUTURE == 0 || (station.getJob(prod.getJobnumber()).getStop().getMillis() > new DateTime().getMillis()))) {
-
-                            //panelizációs ellenőrzés
-                            if (PlNner.SW_PAN == 1) {
-                                if (prod.getQty() % prod.getPanelization() != 0) {
-                                    Object[] sor = new Object[7];
-                                    sor[0] = plan.getName();
-                                    sor[1] = station.getName();
-                                    sor[2] = prod.getJobnumber();
-                                    sor[3] = prod.getPartnumber();
-                                    sor[4] = prod.getID();
-                                    sor[5] = "Panelizációs probléma!";
-                                    sor[6] = "Változtatni kell a gyártás mennyiségen, hogy osztható legyen a Panelizációval";
-                                    PlNner.EW.MODEL.addRow(sor);
                                 }
                             }
-                            //panelizációs ellenőrzés
-                            if (PlNner.SW_ENGINEER == 1) {
-                                if (prod.isEngeenering()) {
-                                    if ((station.getJob(prod.getJobnumber()).getStart().getHourOfDay() < PlNner.VAL_FROM || (station.getJob(prod.getJobnumber()).getStart().getHourOfDay() > PlNner.VAL_TO))) {
+
+                            if ((PlNner.SW_QTY_AUTO_CORRECT == 1) && (station.getJob(prod.getJobnumber()).getStop().getMillis() < new DateTime().getMillis())) {
+                                if ((prod.getFactMSzak() > 0) && (prod.getFactMSzak() < prod.getQty())) {
+                                    prod.setQty(prod.getFactMSzak());
+                                }
+                            }
+
+                            if ((PlNner.SW_NOW_AND_FUTURE == 0 || (station.getJob(prod.getJobnumber()).getStop().getMillis() > new DateTime().getMillis()))) {
+
+                                //panelizációs ellenőrzés
+                                if (PlNner.SW_PAN == 1) {
+                                    if (prod.getQty() % prod.getPanelization() != 0) {
                                         Object[] sor = new Object[7];
                                         sor[0] = plan.getName();
                                         sor[1] = station.getName();
                                         sor[2] = prod.getJobnumber();
                                         sor[3] = prod.getPartnumber();
                                         sor[4] = prod.getID();
-                                        sor[5] = "Mérnöki gyártás rossz időpontba esik!";
-                                        sor[6] = "Változtatni kellene a prioritáson vagy az elötte lévő terméket megbontani!";
+                                        sor[5] = "Panelizációs probléma!";
+                                        sor[6] = "Változtatni kell a gyártás mennyiségen, hogy osztható legyen a Panelizációval";
                                         PlNner.EW.MODEL.addRow(sor);
                                     }
                                 }
-                            }
-
-                            try {
-                                if ((new DateTime().getMillis() < station.getJob(prod.getJobnumber()).getStart().getMillis()) && (station.isKitted(prod.getJobnumber()) == false)) {
-                                    if ((Hours.hoursBetween(new DateTime(), station.getJob(prod.getJobnumber()).getStart()).getHours() >= 0) && (Hours.hoursBetween(new DateTime(), station.getJob(prod.getJobnumber()).getStart()).getHours() <= 24)) {
-
-                                        Object[] sor = new Object[7];
-                                        sor[0] = plan.getName();
-                                        sor[1] = station.getName();
-                                        sor[2] = prod.getJobnumber();
-                                        sor[3] = prod.getPartnumber();
-                                        sor[4] = prod.getID();
-                                        sor[5] = "Ez a job nincs még kittelve!!!";
-                                        sor[6] = "Mihamarább küld le a raktárnak szedésre!";
-                                        PlNner.EW.MODEL.addRow(sor);
-
+                                //panelizációs ellenőrzés
+                                if (PlNner.SW_ENGINEER == 1) {
+                                    if (prod.isEngeenering()) {
+                                        if ((station.getJob(prod.getJobnumber()).getStart().getHourOfDay() < PlNner.VAL_FROM || (station.getJob(prod.getJobnumber()).getStart().getHourOfDay() > PlNner.VAL_TO))) {
+                                            Object[] sor = new Object[7];
+                                            sor[0] = plan.getName();
+                                            sor[1] = station.getName();
+                                            sor[2] = prod.getJobnumber();
+                                            sor[3] = prod.getPartnumber();
+                                            sor[4] = prod.getID();
+                                            sor[5] = "Mérnöki gyártás rossz időpontba esik!";
+                                            sor[6] = "Változtatni kellene a prioritáson vagy az elötte lévő terméket megbontani!";
+                                            PlNner.EW.MODEL.addRow(sor);
+                                        }
                                     }
                                 }
 
-                            } catch (NullPointerException e) {
+                                try {
+                                    if ((new DateTime().getMillis() < station.getJob(prod.getJobnumber()).getStart().getMillis()) && (station.isKitted(prod.getJobnumber()) == false)) {
+                                        if ((Hours.hoursBetween(new DateTime(), station.getJob(prod.getJobnumber()).getStart()).getHours() >= 0) && (Hours.hoursBetween(new DateTime(), station.getJob(prod.getJobnumber()).getStart()).getHours() <= 24)) {
 
+                                            Object[] sor = new Object[7];
+                                            sor[0] = plan.getName();
+                                            sor[1] = station.getName();
+                                            sor[2] = prod.getJobnumber();
+                                            sor[3] = prod.getPartnumber();
+                                            sor[4] = prod.getID();
+                                            sor[5] = "Ez a job nincs még kittelve!!!";
+                                            sor[6] = "Mihamarább küld le a raktárnak szedésre!";
+                                            PlNner.EW.MODEL.addRow(sor);
+
+                                        }
+                                    }
+
+                                } catch (NullPointerException e) {
+
+                                }
                             }
                         }
                     }
-                }
                 }
 
             }

@@ -5,7 +5,9 @@
  */
 package pl.nner;
 
+import com.jgoodies.forms.layout.Sizes;
 import java.awt.Color;
+import java.awt.*;
 import java.awt.Dimension;
 import java.awt.FileDialog;
 import java.awt.Font;
@@ -49,6 +51,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+import javafx.scene.control.Dialog;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -106,6 +109,7 @@ public class MainForm extends javax.swing.JFrame {
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
             try {
                 //temp mentese a terveknek
                 PlNner.doTempSave();
@@ -142,6 +146,7 @@ public class MainForm extends javax.swing.JFrame {
 
                 }
             }
+
         }
 
     };
@@ -235,6 +240,8 @@ public class MainForm extends javax.swing.JFrame {
         PlNner.ABOUT = new About(this, true);
         PlNner.WPW = new WhereProducedWindow(this, false);
         PlNner.SIB = new StationInformationBox(this, false);
+        PlNner.kapocsiha = new Kapocshiba(this, true);
+
 
         /*Partnumber Adatbázis karbantartó*/
         PlNner.PNDATA = new PN_DATA_WINDOW();
@@ -1451,6 +1458,8 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         savePlan();
+        Thread t = new ErrorLogger();
+        t.start();
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed

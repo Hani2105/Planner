@@ -172,6 +172,7 @@ public class PlNner {
     public static StationInformationBox SIB;
     public static String USER_PICS_DIR;
     public static PN_DATA_WINDOW PNDATA;
+    public static Kapocshiba kapocsiha;
 
     //Roli változók kezdete
     public static Beallitasablak BEALLITAS_ABLAK;
@@ -201,13 +202,13 @@ public class PlNner {
      * @param filenames
      * @param args the command line arguments
      */
-    static Runnable WO_TASK = new Runnable() {
-
-        @Override
-        public void run() {
-
-        }
-    };
+//    static Runnable WO_TASK = new Runnable() {
+//
+//        @Override
+//        public void run() {
+//
+//        }
+//    };
 
     public static void main(String[] args) throws ClassCastException {
 
@@ -639,7 +640,7 @@ public class PlNner {
         szal.start();
         //varjon ra a main szal
 
-        szal.join();
+        //szal.join();
 
     }
 
