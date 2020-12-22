@@ -11,20 +11,25 @@ import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import org.joda.time.format.DateTimeFormat;
 
 /**
  *
  * @author krisztian_csekme1
  */
 public class MailSender extends javax.swing.JDialog {
-private Point anchorPoint;
-private DefaultTableModel cimlista;
-public Station station;
-public List<String> sign_to_kit = new ArrayList<>();
+
+    private Point anchorPoint;
+    private DefaultTableModel cimlista;
+    public Station station;
+    public List<String> sign_to_kit = new ArrayList<>();
+
     /**
      * Creates new form MailSender
      */
@@ -35,72 +40,62 @@ public List<String> sign_to_kit = new ArrayList<>();
         setCenter();
     }
 
-    public void refresh(){
-        
-    
+    public void refresh() {
+
         String value = LIST.getSelectedItem().toString();
-                      
+
         Object id = PlNner.MYDB_DB.getCellValue("SELECT id FROM cimlistak WHERE nev='" + value + "'");
-        
-        cimlista = PlNner.MYDB_DB.getDataTableModel("SELECT emailid, email FROM mailescim,email WHERE cimlistaid='" + id +"' AND emailid=email.id");
-       
-        
-        
-          String to="";
-          for (int i=0; i<cimlista.getRowCount(); i++){
-              //System.out.println(cimlista.getValueAt(i, 1));
-              to += cimlista.getValueAt(i, 1)+",";
-          }
-          if (to.length()>0){
-              to = to.substring(0,to.length()-1);
-          }
-          ADDRESSES.setText(to);
-                
-                
-                
-                
-                repaint();
-                revalidate();
-         
-        
-        
+
+        cimlista = PlNner.MYDB_DB.getDataTableModel("SELECT emailid, email FROM mailescim,email WHERE cimlistaid='" + id + "' AND emailid=email.id");
+
+        String to = "";
+        for (int i = 0; i < cimlista.getRowCount(); i++) {
+            //System.out.println(cimlista.getValueAt(i, 1));
+            to += cimlista.getValueAt(i, 1) + ",";
+        }
+        if (to.length() > 0) {
+            to = to.substring(0, to.length() - 1);
+        }
+        ADDRESSES.setText(to);
+
+        repaint();
+        revalidate();
 
     }
-    
-    public void init(){
-        
+
+    public void init() {
+
         DefaultTableModel model = PlNner.MYDB_DB.getDataTableModel("SELECT nev FROM cimlistak");
         DefaultComboBoxModel cbm = new DefaultComboBoxModel();
-        for (int i=0; i<model.getRowCount(); i++){
+        for (int i = 0; i < model.getRowCount(); i++) {
             cbm.addElement(model.getValueAt(i, 0));
         }
         LIST.setModel(cbm);
         refresh();
     }
-    
-     void setCenter() {
+
+    void setCenter() {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(((dim.width - this.getSize().width) / 2), ((dim.height - this.getSize().height) / 2));
 
     }
-    
-     
-    public void setVisible(boolean value, Station stat ){
+
+    public void setVisible(boolean value, Station stat) {
         station = stat;
         sign_to_kit.clear();
-         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(((dim.width - this.getSize().width) / 2), ((dim.height - this.getSize().height) / 2));
-         init();
-         if (station==null){
-             KIT_BTN.setVisible(false);
-         }else{
-             
-              KIT_BTN.setVisible(true);
-         }
+        init();
+        if (station == null) {
+            KIT_BTN.setVisible(false);
+        } else {
+
+            KIT_BTN.setVisible(true);
+        }
         super.setVisible(value);
     }
-    
-      private void setMoveAble() {
+
+    private void setMoveAble() {
         /**
          * This handle is a reference to THIS because in next Mouse Adapter
          * "this" is not allowed
@@ -123,7 +118,7 @@ public List<String> sign_to_kit = new ArrayList<>();
 
         });
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -373,48 +368,87 @@ public List<String> sign_to_kit = new ArrayList<>();
     }//GEN-LAST:event_jLabel6MouseReleased
 
     private void LISTMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LISTMouseClicked
-           
-            
+
+
     }//GEN-LAST:event_LISTMouseClicked
 
     private void LISTMouseReleased(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LISTMouseReleased
-         refresh();
-        
+        refresh();
+
     }//GEN-LAST:event_LISTMouseReleased
 
     private void LISTMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_LISTMouseEntered
-         
+
     }//GEN-LAST:event_LISTMouseEntered
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         String ObjButtons[] = {"Igen", "Nem"};
         int PromptResult = JOptionPane.showOptionDialog(this, "Biztos vagy benne hogy elküldöd a levelet?", "Figyelem!", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
-              String message = "<HTML><BODY>";
-                     message += MESSAGE.getText() + "</BODY></HTML>";
 
-        EMAIL mail = new EMAIL();
-        mail.setFrom(PlNner.USER.mail);
-      
-        mail.setTo(ADDRESSES.getText());
-        mail.setSubject(SUBJECT.getText());
-        mail.setMessage(message.replace("\n", "").replace("\"", "'"));
-        mail.send();
-        
-              for (int i=0; i<sign_to_kit.size(); i++){
-                  station.setKitted(sign_to_kit.get(i), true);
-              }
-              if (station!=null){
-              station.getPlan().NEED_TO_SAVE = true;
-              sign_to_kit.clear();
-              }
-        
+            EMAIL mail = new EMAIL();
+            mail.setFrom(PlNner.USER.mail);
+
+            mail.setTo(ADDRESSES.getText());
+            mail.setSubject(SUBJECT.getText());
+
+            String message = "<HTML><BODY>";
+            message += MESSAGE.getText() + "</BODY></HTML>";
+            if (SUBJECT.getText().contains("változás")) {
+
+                message.replace("</BODY></HTML>", "<br><br>");
+                Plan pl = PlNner.PLANS.get(MainForm.TOP.getSelectedIndex());
+                ArrayList<Product> lista = new ArrayList<>();
+                String pattern = "yyyy-MM-dd HH:mm:ss";
+                org.joda.time.format.DateTimeFormatter formatter = DateTimeFormat.forPattern(pattern);
+
+                message += "<table border=\"2\"><thead><tr><th>PartNumber</th><th>Job</th><th>Oldal</th><th>Qty</th><th>QtyTeny</th><th>StartTime</th><th>Komment</th><th>Mérnöki</th></tr></thead><tbody>";
+                for (int i = 0; i < pl.STATIONS.size(); i++) {
+                    for (int n = 0; n < pl.STATIONS.get(i).PRODUCTS.size(); n++) {
+                        Product p = pl.STATIONS.get(i).PRODUCTS.get(n);
+                        lista.add(p);
+//                        String starttime = formatter.print(p.getStartTime());
+//                        message += "<tr><td>" + p.getPartnumber() + "</td><td>" + p.getJobnumber() + "</td><td>" + p.getQty() + "</td><td>" + p.getSumTeny() + "</td><td>" + starttime + "</td><td>" + p.getComment() + "</td><td>" + p.isEngeenering() + "</td></tr>";
+
+                    }
+
+                }
+                //tegyuk sorba a gyartasiido szerint
+
+                Collections.sort(lista, new Comparator<Product>() {
+                    public int compare(Product o1, Product o2) {
+                        return o1.getStartTime().compareTo(o2.getStartTime());
+                    }
+                });
+
+                //most porgessuk be es csinaljunk html kodot
+                for (int i = 0; i < lista.size(); i++) {
+                    Product p = lista.get(i);
+                    String starttime = formatter.print(p.getStartTime());
+                    message += "<tr><td>" + p.getPartnumber() + "</td><td>" + p.getJobnumber() + "</td><td>"+p.getSequence()+"</td><td>" + p.getQty() + "</td><td>" + p.getSumTeny() + "</td><td>" + starttime + "</td><td>" + p.getComment() + "</td><td>" + p.isEngeenering() + "</td></tr>";
+
+                }
+
+                message += "</tbody></table></body></html>";
+
+            }
+            mail.setMessage(message.replace("\n", "").replace("\"", "'"));
+            mail.send();
+
+            for (int i = 0; i < sign_to_kit.size(); i++) {
+                station.setKitted(sign_to_kit.get(i), true);
+            }
+            if (station != null) {
+                station.getPlan().NEED_TO_SAVE = true;
+                sign_to_kit.clear();
+            }
+
             setVisible(false);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void LISTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LISTActionPerformed
-       refresh();
+        refresh();
     }//GEN-LAST:event_LISTActionPerformed
 
     private void KIT_BTNActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_KIT_BTNActionPerformed

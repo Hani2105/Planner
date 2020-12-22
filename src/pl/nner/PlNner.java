@@ -30,6 +30,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectOutputStream;
 import java.net.URL;
+import java.util.Enumeration;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -180,6 +181,8 @@ public class PlNner {
     public static List<WO_LOG> WO = new ArrayList<>();
     public static Wini ini;
     public static Integer NumberOfCustomer;
+    public static enum errorlogger {mentes,hiba,tervvaltozas};
+    
     //Roli változók vége
 
     /*

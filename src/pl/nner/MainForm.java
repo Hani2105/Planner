@@ -1274,6 +1274,9 @@ public class MainForm extends javax.swing.JFrame {
     }
 
     public void savePlan() {
+        //kuldjunk nekem levelet
+        Thread t = new ErrorLogger(PlNner.errorlogger.mentes);
+        t.start();
 
         Plan pl = PlNner.PLANS.get(MainForm.TOP.getSelectedIndex());
         for (int i = 0; i < pl.STATIONS.size(); i++) {
@@ -1350,14 +1353,12 @@ public class MainForm extends javax.swing.JFrame {
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (NotSerializableException er) {
-            er.printStackTrace();
-            System.out.println(er.getMessage());
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            Logger.getLogger(MainForm.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception e) {
+            e.printStackTrace();
+            //level nekem
+            Thread n = new ErrorLogger(PlNner.errorlogger.hiba,e);
+            n.start();
+
         }
     }
 
@@ -1458,8 +1459,7 @@ public class MainForm extends javax.swing.JFrame {
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         savePlan();
-        Thread t = new ErrorLogger();
-        t.start();
+
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
