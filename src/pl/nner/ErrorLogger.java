@@ -37,7 +37,8 @@ public class ErrorLogger extends Thread {
     public void run() {
         //melyik tab
         Plan pl = PlNner.PLANS.get(MainForm.TOP.getSelectedIndex());
-        EMAIL mail = new EMAIL();
+        //EMAIL mail = new EMAIL();
+        Levelkuldes l = null;
         switch (e) {
             //ha mentjuk a terveket
             case mentes:
@@ -75,21 +76,25 @@ public class ErrorLogger extends Thread {
 
                 message += "</tbody></table></body></html>";
 
-                mail.setFrom("Planner@sanmina.com");
-                mail.setTo("gabor.hanacsek@sanmina.com," + PlNner.USER.mail);
-                mail.setSubject("Terv mentés " + pl.getName());
-                mail.setMessage(message);
-                mail.send();
+//                mail.setFrom("Planner@sanmina.com");
+//                mail.setTo("gabor.hanacsek@sanmina.com," + PlNner.USER.mail);
+//                mail.setSubject("Terv mentés " + pl.getName());
+//                mail.setMessage(message);
+//                mail.send();
+                l = new Levelkuldes("Terv mentés " + pl.getName(), message, "gabor.hanacsek@sanmina.com," + PlNner.USER.mail, "Planner@sanmina.com");
+                l.run();
                 break;
 
             case hiba:
 
-                mail = new EMAIL();
-                mail.setFrom("Planner@sanmina.com");
-                mail.setTo("gabor.hanacsek@sanmina.com");
-                mail.setSubject("Mentés hiba" + pl.getName());
-                mail.setMessage(ex.getMessage());
-                mail.send();
+//                mail = new EMAIL();
+//                mail.setFrom("Planner@sanmina.com");
+//                mail.setTo("gabor.hanacsek@sanmina.com");
+//                mail.setSubject("Mentés hiba" + pl.getName());
+//                mail.setMessage(ex.getMessage());
+//                mail.send();
+                l = new Levelkuldes("Terv mentés " + pl.getName(), message, "gabor.hanacsek@sanmina.com," + PlNner.USER.mail, "Planner@sanmina.com");
+                l.run();
 
                 break;
 

@@ -279,13 +279,18 @@ public class LOGIN extends javax.swing.JFrame {
         if (res.equals(-1)) {
             JOptionPane.showMessageDialog(this, "Ezzel az ID-val nem találtam felhasználót! Biztos benne hogy van jogosultsága a programhoz?", "Figyelem!", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("IMG/ooo64.png")));
         } else {
-            EMAIL mail = new EMAIL();
-            mail.setTo(res.toString());
-            mail.setFrom("planner@sanmina.com");
-            mail.setSubject("Elfelejtett jelszó");
-            res = PlNner.MYDB_DB.getCellValue("SELECT pass from perm WHERE id='" + ID.getText() + "';");
-            mail.setMessage("Az ön elfelejtett jelszava: " + res.toString());
-            mail.send();
+            //EMAIL mail = new EMAIL();
+//            mail.setTo(res.toString());
+//            mail.setFrom("planner@sanmina.com");
+//            mail.setSubject("Elfelejtett jelszó");
+//            res = PlNner.MYDB_DB.getCellValue("SELECT pass from perm WHERE id='" + ID.getText() + "';");
+//            mail.setMessage("Az ön elfelejtett jelszava: " + res.toString());
+//            mail.send();
+            
+            Levelkuldes l = new Levelkuldes("Elfelejtett jelszó", "Az ön elfelejtett jelszava: " + res.toString(), res.toString(), "planner@sanmina.com");
+            l.start();
+            
+            
             JOptionPane.showMessageDialog(this, "Hamarosan megérkezik a postaládájába az elfelejtett jelszava!", "Figyelem!", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(this.getClass().getResource("IMG/ok64.png")));
 
         }

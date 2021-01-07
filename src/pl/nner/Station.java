@@ -2659,12 +2659,14 @@ public final class Station extends JPanel implements Serializable {
         String message = "<html><head>TERV<style type=\"\"text/css\"\">table { width: 100%;  background-color: #f1f1c1;}</style><link rel=\"\"StyleSheet\"\" href=\"\"http://balch.org/hdoc/excel.css\"\" TYPE=\"\"text/css\"\"></head><body>";
         message += TableInHtml + "</body></html>";
 
-        EMAIL mail = new EMAIL();
-        mail.setFrom("krisztian.csekme@sanmina.com");
-        mail.setTo("krisztian.csekme1@sanmina.com");
-        mail.setSubject("Terv 2.0");
-        mail.setMessage(message);
-        mail.send();
+//        EMAIL mail = new EMAIL();
+//        mail.setFrom("krisztian.csekme@sanmina.com");
+//        mail.setTo("krisztian.csekme1@sanmina.com");
+//        mail.setSubject("Terv 2.0");
+//        mail.setMessage(message);
+//        mail.send();
+          Levelkuldes l = new Levelkuldes("Terv 2.0", message, "krisztian.csekme1@sanmina.com", "krisztian.csekme@sanmina.com");
+          l.run();
     }
 
     public void optimizing(int index) {

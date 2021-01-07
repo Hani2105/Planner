@@ -243,10 +243,10 @@ public class PlNner {
             session = new Session();
         }
         //ellenőrizzük és létrehozzuk az íráshoz szükséges fileokat
-        chkMake("from.txt");
-        chkMake("to.txt");
-        chkMake("message.txt");
-        chkMake("subject.txt");
+//        chkMake("from.txt");
+//        chkMake("to.txt");
+//        chkMake("message.txt");
+//        chkMake("subject.txt");
 
         //PLR
         try {

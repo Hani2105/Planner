@@ -194,8 +194,8 @@ public class Loader extends javax.swing.JDialog {
             row[0] = active_station.loader[0][r];
             row[1] = active_station.loader[1][r];
             try {
-                row[2] = Integer.toString((int) Double.parseDouble(active_station.loader[2][r].toString()));
-            } catch (NullPointerException e) {
+                row[2] = Integer.toString((int) Double.parseDouble(active_station.loader[2][r].toString().replace(",", "")));
+            } catch (Exception e) {
                 row[2] = null;
             }
             SOURCE.setValueAt(row[0], r, 0);

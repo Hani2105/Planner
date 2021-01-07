@@ -386,11 +386,13 @@ public class MailSender extends javax.swing.JDialog {
         int PromptResult = JOptionPane.showOptionDialog(this, "Biztos vagy benne hogy elküldöd a levelet?", "Figyelem!", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, ObjButtons, ObjButtons[1]);
         if (PromptResult == JOptionPane.YES_OPTION) {
 
-            EMAIL mail = new EMAIL();
-            mail.setFrom(PlNner.USER.mail);
+           // EMAIL mail = new EMAIL();
+//            mail.setFrom(PlNner.USER.mail);
+//
+//            mail.setTo(ADDRESSES.getText());
+//            mail.setSubject(SUBJECT.getText());
 
-            mail.setTo(ADDRESSES.getText());
-            mail.setSubject(SUBJECT.getText());
+            
 
             String message = "<HTML><BODY>";
             message += MESSAGE.getText() + "</BODY></HTML>";
@@ -432,8 +434,10 @@ public class MailSender extends javax.swing.JDialog {
                 message += "</tbody></table></body></html>";
 
             }
-            mail.setMessage(message.replace("\n", "").replace("\"", "'"));
-            mail.send();
+//            mail.setMessage(message.replace("\n", "").replace("\"", "'"));
+//            mail.send();
+            Levelkuldes l = new Levelkuldes(SUBJECT.getText(), message.replace("\n", "").replace("\"", "'"), ADDRESSES.getText(), PlNner.USER.mail);
+            l.run();
 
             for (int i = 0; i < sign_to_kit.size(); i++) {
                 station.setKitted(sign_to_kit.get(i), true);
